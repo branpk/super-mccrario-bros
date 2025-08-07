@@ -2,7 +2,6 @@ import { Screen } from './Screen.js';
 import { Level } from './Level.js';
 import { Input } from './Input.js';
 import { DebugInfo } from './DebugInfo.js';
-import { Game } from './Game.js';
 
 export class GameLoop {
   constructor(private screen: Screen) {}
@@ -18,19 +17,16 @@ export class GameLoop {
       const delta = (now - last) / 1000;
       last = now;
 
-        if (Input.isKeyDown('Escape') && !DebugInfo.debug) {
-          Game.stop();
-          return;
+        if (Input.isKeyDown('Escape') || Input.isKeyDown('Enter')) {
+          Input.overrideKey('Escape');
+          Input.overrideKey('Enter');
+          paused = !paused;
+          this.screen.setPaused(paused);
         }
         if (Input.isKeyDown('Backquote')) {
           Input.manualKeyRelease('Backquote');
           DebugInfo.debug = !DebugInfo.debug;
           level.switchDebugMode();
-        }
-        if (Input.isKeyDown('Enter')) {
-          Input.overrideKey('Enter');
-          paused = !paused;
-          this.screen.setPaused(paused);
         }
 
         accum += delta;
