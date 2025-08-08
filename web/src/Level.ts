@@ -24,6 +24,8 @@ import { Physics } from './Physics.js';
 import { DebugInfo } from './DebugInfo.js';
 import { Input } from './Input.js';
 
+const ALWAYS_ALLOW_FLYING = false; // set to false to restrict flying to debug mode
+
 const TILE_CLASSES = [Air, SurfaceBlock, UndergroundBrick, GoalTile, BrokenBrick, GrassBlock, BossBrick, BossStop];
 const ENTITY_CLASSES = [Player, Baal, SpikeBaal, Baaloon, Stopper, Checkpoint, BossBaal, ThanksForPlaying];
 
@@ -240,10 +242,14 @@ export class Level {
   switchDebugMode() {
     for (let i = 0; i < this.entities.length; ++i) {
       const ent = this.entities[i];
-      if (DebugInfo.debug && ent instanceof Player) {
+      if ((DebugInfo.debug || ALWAYS_ALLOW_FLYING) && ent instanceof Player) {
         const pos = ent.getPos().clone();
         this.entities[i] = new FlyingPlayer(pos);
-      } else if (!DebugInfo.debug && ent instanceof FlyingPlayer) {
+      } else if (
+        !DebugInfo.debug &&
+        !ALWAYS_ALLOW_FLYING &&
+        ent instanceof FlyingPlayer
+      ) {
         const pos = ent.getPos().clone();
         this.entities[i] = new Player(pos);
       }

@@ -6,10 +6,17 @@ export class Input {
   private static mouseY = 0;
 
   static init(canvas: HTMLCanvasElement) {
-    window.addEventListener('keydown', (e) => {
+    const blockScroll = (code: string) =>
+      code === 'ArrowUp' ||
+      code === 'ArrowDown' ||
+      code === 'ArrowLeft' ||
+      code === 'ArrowRight';
+    window.addEventListener('keydown', e => {
+      if (blockScroll(e.code)) e.preventDefault();
       if (!Input.keysDown.has(e.code)) Input.keysDown.add(e.code);
     });
-    window.addEventListener('keyup', (e) => {
+    window.addEventListener('keyup', e => {
+      if (blockScroll(e.code)) e.preventDefault();
       Input.keysDown.delete(e.code);
       Input.keysOvrd.delete(e.code);
     });

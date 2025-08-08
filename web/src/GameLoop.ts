@@ -2,6 +2,7 @@ import { Screen } from './Screen.js';
 import { Level } from './Level.js';
 import { Input } from './Input.js';
 import { DebugInfo } from './DebugInfo.js';
+import { Speedrun } from './Speedrun.js';
 
 export class GameLoop {
   constructor(private screen: Screen) {}
@@ -23,17 +24,21 @@ export class GameLoop {
           paused = !paused;
           this.screen.setPaused(paused);
         }
-        if (Input.isKeyDown('Backquote')) {
-          Input.manualKeyRelease('Backquote');
-          DebugInfo.debug = !DebugInfo.debug;
-          level.switchDebugMode();
-        }
+          if (Input.isKeyDown('Backquote')) {
+            Input.manualKeyRelease('Backquote');
+            DebugInfo.debug = !DebugInfo.debug;
+            level.switchDebugMode();
+            if (DebugInfo.debug) Speedrun.debugUsed();
+          }
 
         accum += delta;
-        while (accum >= STEP) {
-          if (!paused) level.update(STEP);
-          accum -= STEP;
-        }
+          while (accum >= STEP) {
+            if (!paused) {
+              level.update(STEP);
+            }
+            Speedrun.update(STEP);
+            accum -= STEP;
+          }
       this.screen.repaint();
 
       frames++;

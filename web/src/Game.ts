@@ -3,6 +3,7 @@ import { Screen } from './Screen.js';
 import { GameLoop } from './GameLoop.js';
 import { Level } from './Level.js';
 import { Input } from './Input.js';
+import { Speedrun } from './Speedrun.js';
 
 export class Game {
   private screen: Screen;
@@ -22,30 +23,52 @@ export class Game {
     await new Promise(r => setTimeout(r, 3000));
     this.screen.showLogo(false);
 
-    this.runLevel('1-1', 0);
+      Speedrun.reset();
+      this.runLevel('1-1', 0);
   }
 
-  private async runLevel(name: string, checkpoint: number) {
-    const level = await Level.load(name, checkpoint);
-    this.screen.setLevel(level);
-    // Audio temporarily disabled
-    this.loop.play(level, async () => {
-      if (level.didWin()) {
-        const next = Game.nextLevelName(level.getName());
-        if (next) {
-          await this.runLevel(next, 0);
+    private async runLevel(name: string, checkpoint: number, restart = false) {
+      if (!restart) Speedrun.startLevel(Game.levelIndex(name));
+      const level = await Level.load(name, checkpoint);
+      level.switchDebugMode();
+      this.screen.setLevel(level);
+      // Audio temporarily disabled
+      this.loop.play(level, async () => {
+        if (level.didWin()) {
+          Speedrun.finishLevel();
+          const next = Game.nextLevelName(level.getName());
+          if (next) {
+            await this.runLevel(next, 0);
+          } else {
+            Speedrun.finishGame();
+            this.screen.showLogo(true);
+            this.screen.repaint();
+            await new Promise(r => setTimeout(r, 3000));
+            this.screen.showLogo(false);
+            Game.stop();
+          }
         } else {
-          this.screen.showLogo(true);
-          this.screen.repaint();
-          await new Promise(r => setTimeout(r, 3000));
-          this.screen.showLogo(false);
-          Game.stop();
+          await this.runLevel(level.getName(), level.getCheckpoint(), true);
         }
-      } else {
-        await this.runLevel(level.getName(), level.getCheckpoint());
+      });
+    }
+
+    private static levelIndex(name: string): number {
+      switch (name) {
+        case '1-1':
+          return 0;
+        case '1-2':
+          return 1;
+        case '1-3':
+          return 2;
+        case '1-4':
+          return 3;
+        case '1-B':
+          return 4;
+        default:
+          return -1;
       }
-    });
-  }
+    }
 
   private static nextLevelName(current: string): string | null {
     const [worldStr, levelStr] = current.split('-');

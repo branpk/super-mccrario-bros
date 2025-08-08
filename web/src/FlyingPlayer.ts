@@ -2,6 +2,7 @@ import { Player } from './Player.js';
 import { Vector } from './Vector.js';
 import { Input } from './Input.js';
 import { Direction } from './Direction.js';
+import { DebugInfo } from './DebugInfo.js';
 
 export class FlyingPlayer extends Player {
   private isFlying = false;
@@ -48,7 +49,11 @@ export class FlyingPlayer extends Player {
     return super.collidesWithEntity(ent);
   }
 
-  playDeathAnimation(_dt:number) {
-    this.miraculouslyRecover();
+  playDeathAnimation(dt: number) {
+    if (DebugInfo.debug) {
+      this.miraculouslyRecover();
+    } else {
+      super.playDeathAnimation(dt);
+    }
   }
 }
