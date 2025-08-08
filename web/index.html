@@ -9,6 +9,10 @@
       align-items: flex-start;
       gap: 40px;
     }
+    #speedrun-row {
+      display: flex;
+      gap: 40px;
+    }
   </style>
 </head>
 <body>
@@ -38,14 +42,29 @@
       </div>
       <div>
         <h2>Speedrun</h2>
-        <table id="speedrun">
-          <tr><td>Level 1</td><td id="sr-l1"></td></tr>
-          <tr><td>Level 2</td><td id="sr-l2"></td></tr>
-          <tr><td>Level 3</td><td id="sr-l3"></td></tr>
-          <tr><td>Level 4</td><td id="sr-l4"></td></tr>
-          <tr><td>Boss</td><td id="sr-boss"></td></tr>
-          <tr><td>Total</td><td id="sr-total"></td></tr>
-        </table>
+        <div id="speedrun-row">
+          <table id="speedrun">
+            <tr><td>Level 1</td><td id="sr-l1"></td></tr>
+            <tr><td>Level 2</td><td id="sr-l2"></td></tr>
+            <tr><td>Level 3</td><td id="sr-l3"></td></tr>
+            <tr><td>Level 4</td><td id="sr-l4"></td></tr>
+            <tr><td>Boss</td><td id="sr-boss"></td></tr>
+            <tr><td>Total</td><td id="sr-total"></td></tr>
+          </table>
+          <div>
+            <h3>Leaderboard</h3>
+            <table id="leaderboard">
+              <thead>
+                <tr><th>Rank</th><th>Username</th><th>Total Time</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div>
+              <input type="text" id="username" placeholder="Username">
+              <button id="set-username">Set Username</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

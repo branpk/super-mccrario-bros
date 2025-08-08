@@ -1,4 +1,5 @@
 import { DebugInfo } from './DebugInfo.js';
+import { Leaderboard } from './Leaderboard.js';
 
 function pad2(n: number): string {
   return n < 10 ? '0' + n : '' + n;
@@ -65,6 +66,16 @@ export class Speedrun {
   static finishGame() {
     this.totalActive = false;
     this.repaint();
+    if (!this.totalInvalid && this.totalTime > 0) {
+      void Leaderboard.recordRun({
+        level1Time: this.levelTimes[0],
+        level2Time: this.levelTimes[1],
+        level3Time: this.levelTimes[2],
+        level4Time: this.levelTimes[3],
+        bossTime: this.levelTimes[4],
+        totalTime: this.totalTime,
+      });
+    }
   }
 
   static update(delta: number) {
