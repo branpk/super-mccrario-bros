@@ -85,6 +85,9 @@ export class Leaderboard {
     });
     const entries = await res.json();
     this.leaderboardBody.textContent = '';
+    const header = document.createElement('tr');
+    header.innerHTML = '<th>Rank</th><th>Name</th><th>Total Time</th>';
+    this.leaderboardBody.appendChild(header);
     for (const entry of entries) {
       const tr = document.createElement('tr');
       if (entry.isRequester) tr.style.fontWeight = 'bold';
