@@ -4,10 +4,13 @@
   <meta charset="utf-8">
   <title>Super McCrario Bros</title>
   <style>
-    #control-row {
+    #timer-leaderboard-row {
       display: flex;
       align-items: flex-start;
       gap: 40px;
+    }
+    #timer-section {
+      width: 110px;
     }
   </style>
 </head>
@@ -16,28 +19,9 @@
   <canvas id="game" width="800" height="600"></canvas>
   <div id="info">
     <p><a href="https://github.com/brandonpickering/super-mccrario-bros">Source on GitHub</a></p>
-    <div id="control-row">
-      <div>
-        <h2>Debug controls</h2>
-        <ul>
-          <li>Press '`' (backtick) to toggle between debug and release mode.</li>
-          <li>Press 'F' to toggle flying. While flying, you do not collide with walls or other entities.</li>
-          <li>Press Backspace to reset checkpoints.</li>
-          <li>Press 'L' or F9 to load a level.</li>
-          <li>Press Esc or F5 to save a level.</li>
-          <li>Press 'Q' and 'E' to switch between types.</li>
-          <li>Left click to place a tile.</li>
-          <li>Right click to replace a tile with air.</li>
-          <li>Click outside the bounds of the level to expand it.</li>
-          <li>Middle click a border row or column to remove it.</li>
-          <li>Press 'R' to switch into entity mode.</li>
-          <li>In entity mode, left click to place an entity seed of the displayed entity.</li>
-          <li>Right click a seed to remove it.</li>
-          <li>Middle click a seed to spawn its entity.</li>
-        </ul>
-      </div>
-      <div>
-        <h2>Speedrun</h2>
+    <div id="timer-leaderboard-row">
+      <div id="timer-section">
+        <h2>Timer</h2>
         <table id="speedrun">
           <tr><td>Level 1</td><td id="sr-l1"></td></tr>
           <tr><td>Level 2</td><td id="sr-l2"></td></tr>
@@ -47,6 +31,35 @@
           <tr><td>Total</td><td id="sr-total"></td></tr>
         </table>
       </div>
+      <div>
+        <h2>Leaderboard</h2>
+        <table id="leaderboard">
+          <tbody></tbody>
+        </table>
+        <div>
+          <input type="text" id="username" placeholder="Name">
+          <button id="set-username">Set name</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>Debug controls</h2>
+      <ul>
+        <li>Press '`' (backtick) to toggle between debug and release mode.</li>
+        <li>Press 'F' to toggle flying. While flying, you do not collide with walls or other entities.</li>
+        <li>Press Backspace to reset checkpoints.</li>
+        <li>Press 'L' or F9 to load a level.</li>
+        <li>Press Esc or F5 to save a level.</li>
+        <li>Press 'Q' and 'E' to switch between types.</li>
+        <li>Left click to place a tile.</li>
+        <li>Right click to replace a tile with air.</li>
+        <li>Click outside the bounds of the level to expand it.</li>
+        <li>Middle click a border row or column to remove it.</li>
+        <li>Press 'R' to switch into entity mode.</li>
+        <li>In entity mode, left click to place an entity seed of the displayed entity.</li>
+        <li>Right click a seed to remove it.</li>
+        <li>Middle click a seed to spawn its entity.</li>
+      </ul>
     </div>
   </div>
   <script type="module" src="./dist/Main.js"></script>
